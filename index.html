@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathways: Beyond Dogma</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+    
+    <style>
+        /* Base Typography */
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+        body { font-family: 'Lato', sans-serif; }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- FREEDOM WALL STYLES --- */
+        
+        /* The Grid Layout: Creates the "rows and columns" look */
+        .masonry-grid {
+            display: grid;
+            /* Auto-fill creates as many columns as fit. Min width 280px. */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem; /* Space between notes */
+            padding-bottom: 5rem;
+        }
+
+        /* The Sticky Note Look */
+        .sticky-note {
+            min-height: 300px; /* Fixed height for consistency */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            
+            /* Visuals */
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.15); /* Drop shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default;
+            
+            /* Handwriting Font */
+            font-family: 'Indie Flower', cursive; 
+            font-size: 1.5rem;
+            line-height: 1.4;
+            color: #333;
+        }
+
+        /* Hover Effect: Note straightens up and lifts */
+        .sticky-note:hover {
+            transform: scale(1.05) rotate(0deg) !important; /* Override inline rotation */
+            z-index: 10;
+            box-shadow: 10px 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Navigation Active State */
+        .nav-link.active {
+            color: #4f46e5;
+            border-bottom: 2px solid #4f46e5;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="router('home')">
+                    <span class="material-symbols-outlined text-indigo-600 text-3xl mr-2">spa</span>
+                    <span class="font-bold text-xl tracking-wide text-slate-900">Pathways</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="router('home')" class="nav-link text-slate-600 hover:text-indigo-600 px-1 py-2 text-sm font-medium transition-colors active">Home</button>
+                    <button onclick="router('articles')" class="nav-link text-slate-600 hover:text-indigo-600 px-1 py-2 text-sm font-medium transition-colors">Resources</button>
+                    <button onclick="router('quiz')" class="nav-link text-slate-600 hover:text-indigo-600 px-1 py-2 text-sm font-medium transition-colors">Deconstruction Quiz</button>
+                    <button onclick="router('wall')" class="nav-link text-slate-600 hover:text-indigo-600 px-1 py-2 text-sm font-medium transition-colors">Freedom Wall</button>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-slate-600 hover:text-indigo-600 p-2">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="router('home'); toggleMobileMenu()" class="block w-full text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">Home</button>
+                <button onclick="router('articles'); toggleMobileMenu()" class="block w-full text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">Resources</button>
+                <button onclick="router('quiz'); toggleMobileMenu()" class="block w-full text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">Quiz</button>
+                <button onclick="router('wall'); toggleMobileMenu()" class="block w-full text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">Freedom Wall</button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="app-container" class="flex-grow relative">
+        </main>
+
+    <footer class="bg-slate-900 text-slate-300 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-4">
+                <span class="material-symbols-outlined hover:text-white cursor-pointer">public</span>
+                <span class="material-symbols-outlined hover:text-white cursor-pointer">mail</span>
+                <span class="material-symbols-outlined hover:text-white cursor-pointer">favorite</span>
+            </div>
+            <p class="text-sm opacity-75">© 2025 Pathways Project. Advocating for healthy spirituality.</p>
+        </div>
+    </footer>
+
+    <template id="view-home">
+        <div class="fade-in">
+            <div class="relative w-full h-[80vh] bg-slate-900 flex items-center justify-center overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1499244571973-2e2e05cfaa0f?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60">
+                <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+                    <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+                        From Dogma to <span class="text-indigo-300">Discovery</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-100 mb-10 font-light drop-shadow-md">
+                        Exploring the delicate balance between religious tradition and personal spiritual well-being.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="router('quiz')" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-bold text-lg transition-all shadow-lg hover:shadow-indigo-500/30 flex items-center justify-center gap-2">
+                            <span>Take the Quiz</span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                        <button onclick="router('articles')" class="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-full font-bold text-lg transition-all flex items-center justify-center gap-2">
+                            <span>Explore Resources</span>
+                            <span class="material-symbols-outlined">library_books</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 py-20">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-4xl font-bold text-slate-900 mb-6">The Shift</h2>
+                        <p class="text-lg text-slate-600 mb-6 leading-relaxed">
+                            For many, organized religion provides community and structure. But for others, it can become a source of dissonance. This dissonance often leads to "Deconstruction"—the process of dissecting and analyzing the beliefs you were raised with.
+                        </p>
+                        <div class="border-l-4 border-indigo-500 pl-6 italic text-slate-700 text-xl">
+                            "The unexamined faith is not worth believing."
+                        </div>
+                    </div>
+                    <div class="relative h-96 rounded-2xl overflow-hidden shadow-2xl group">
+                        <img src="https://images.unsplash.com/photo-1449629559381-1296fa2c554e?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-articles">
+        <div class="fade-in bg-slate-50 min-h-screen pb-20">
+            <div class="bg-slate-900 text-white py-16 px-4 mb-12">
+                <div class="max-w-7xl mx-auto">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Resource Library</h1>
+                    <p class="text-xl text-slate-300 max-w-2xl">Curated studies, articles, and talks.</p>
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-wrap gap-4 mb-10 border-b border-slate-200 pb-4">
+                    <button onclick="filterResources('all', this)" class="filter-btn active px-4 py-2 rounded-full text-sm font-bold bg-indigo-600 text-white shadow-md transition-all">All</button>
+                    <button onclick="filterResources('study', this)" class="filter-btn px-4 py-2 rounded-full text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all">Studies</button>
+                    <button onclick="filterResources('article', this)" class="filter-btn px-4 py-2 rounded-full text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all">Articles</button>
+                    <button onclick="filterResources('video', this)" class="filter-btn px-4 py-2 rounded-full text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all">Videos</button>
+                </div>
+                <div id="resource-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-quiz">
+        <div class="fade-in min-h-screen bg-slate-50 py-12 px-4">
+            <div class="max-w-3xl mx-auto">
+                <div id="quiz-intro" class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                    <div class="h-48 bg-slate-800 relative">
+                        <img src="https://images.unsplash.com/photo-1528319725582-ddc096101511?q=80&w=2069&auto=format&fit=crop" class="w-full h-full object-cover opacity-80">
+                        <div class="absolute bottom-0 left-0 p-8 bg-gradient-to-t from-black/80 to-transparent w-full">
+                            <h1 class="text-3xl font-bold text-white">Spiritual Reflection Quiz</h1>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-600 text-lg mb-6">A safe tool to help you understand your current relationship with spirituality. 10 questions.</p>
+                        <button onclick="startQuiz()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-lg shadow-lg">Start Reflection</button>
+                    </div>
+                </div>
+
+                <div id="quiz-interface" class="hidden">
+                    <div class="mb-6 flex justify-between items-center text-slate-500 font-medium">
+                        <span id="question-tracker">Question 1 of 10</span>
+                        <div class="w-1/3 h-2 bg-slate-200 rounded-full">
+                            <div id="progress-bar" class="h-full bg-indigo-600 rounded-full transition-all duration-300" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-xl p-8 min-h-[400px] flex flex-col justify-center relative">
+                        <h2 id="question-text" class="text-2xl font-serif font-bold text-slate-800 mb-8 text-center leading-relaxed">Loading...</h2>
+                        <div id="options-container" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <div id="quiz-results" class="hidden fade-in"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-wall">
+        <div class="fade-in min-h-screen bg-[#fdfbf7] relative">
+            <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cork-board.png');"></div>
+            
+            <div class="relative z-10 max-w-7xl mx-auto px-4 py-12">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-4">The Freedom Wall</h1>
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Submissions are anonymous and ephemeral—they will vanish when the page refreshes.
+                    </p>
+                </div>
+
+                <div class="max-w-2xl mx-auto mb-16">
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100 transform -rotate-1">
+                        <textarea id="wall-input" rows="3" class="w-full p-4 border border-slate-300 rounded-lg outline-none resize-none bg-slate-50" placeholder="I found peace in..."></textarea>
+                        <div class="flex justify-between items-center mt-4">
+                            <span class="text-xs text-slate-400 italic">This note will not be saved permanently.</span>
+                            <button onclick="postNote()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-md flex items-center gap-2">
+                                <span>Post Note</span>
+                                <span class="material-symbols-outlined text-sm">send</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="wall-container" class="masonry-grid pb-20">
+                    </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+    <script src="data.js"></script>
+</body>
+</html>
