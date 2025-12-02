@@ -157,7 +157,7 @@ function calculateResults() {
 
     if (totalScore <= 23) {
         resultData = {
-            title: "The Pressure Stage",
+            title: "The Pressured Stage",
             desc: "You might currently experience faith as something shaped by expectations, rules, or fear of disappointing others. Your beliefs may feel more like obligations than choices. This stage often includes guilt, pressure, or uncertainty about speaking your truth, and that’s completely human. Many people start their journey here.",
             img: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1527&auto=format&fit=crop",
             color: "text-emerald-700",
@@ -167,7 +167,7 @@ function calculateResults() {
         resultData = {
             title: "The Deconstruction Stage",
             desc: "You are starting to think, question, and reevaluate what you grew up with. You are not rejecting everything, you are just still trying to understand what genuinely feels right for you. This stage is marked by curiosity, reflection, and the courage to explore beyond old expectations.",
-            img: "https://images.unsplash.com/photo-1502421897748-305647490083?q=80&w=1632&auto=format&fit=crop",
+            img: "https://info.thecrossingchurch.com/hubfs/Imported_Blog_Media/Dealing-with-Deconstruction_Blog.jpg",
             color: "text-amber-700",
             advice: "Be patient with yourself. Deconstruction is not a race. Allow yourself to mourn the certainty you lost."
         };
@@ -175,7 +175,7 @@ function calculateResults() {
         resultData = {
             title: "The Personal Spirituality Stage",
             desc: "Your spirituality comes from within. Instead of fear or pressure, you choose beliefs and practices that feel meaningful, calming, and authentic to you. You’re finding your voice, defining what faith means on your own terms, and building something grounded in understanding and growth.",
-            img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1494&auto=format&fit=crop",
+            img: "https://iso.500px.com/wp-content/uploads/2013/08/11834033-1170.jpeg",
             color: "text-indigo-700",
             advice: "Your challenge now is to find community without compromising your freedom. Look for others who speak your language of the heart."
         };
@@ -188,7 +188,7 @@ function calculateResults() {
                     <img src="${resultData.img}" class="w-full h-full object-cover">
                 </div>
                 <div class="p-8 md:p-12 flex flex-col justify-center">
-                    <span class="uppercase tracking-widest text-sm font-bold text-slate-400 mb-2">Your Archetype</span>
+                    <span class="uppercase tracking-widest text-sm font-bold text-slate-400 mb-2">Your Stage</span>
                     <h2 class="text-4xl font-serif font-bold ${resultData.color} mb-6">${resultData.title}</h2>
                     <p class="text-slate-600 text-lg leading-relaxed mb-6">${resultData.desc}</p>
                     
@@ -201,7 +201,7 @@ function calculateResults() {
                         <button onclick="router('wall')" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow transition-colors">
                             Share Thoughts on Wall
                         </button>
-                        <button onclick="startQuiz()" class="px-6 py-3 text-slate-500 hover:text-indigo-600 font-bold">
+                        <button onclick="router('quiz')" class="px-6 py-3 text-slate-500 hover:text-indigo-600 font-bold">
                             Retake
                         </button>
                     </div>
